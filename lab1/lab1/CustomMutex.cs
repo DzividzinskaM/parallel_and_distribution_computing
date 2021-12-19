@@ -8,11 +8,17 @@ namespace lab1
     public class CustomMutex
     {
         private Thread _currentThread;
-        private List<Thread> _waitingThreads;
+        public List<Thread> _waitingThreads;
         private int _isLocked = 0;
 
-        private void _lock()
+        public CustomMutex()
         {
+            _waitingThreads = new List<Thread>();
+        }
+
+        public void _lock()
+        {
+            Console.WriteLine("lock");
             Interlocked.Exchange(ref _isLocked, 1);
             while (Interlocked.CompareExchange<Thread>(ref _currentThread, Thread.CurrentThread, null) == null)
             {
@@ -21,8 +27,9 @@ namespace lab1
 
         }
 
-        private void _unlock()
+        public void _unlock()
         {
+            Console.WriteLine("unlock");
             Interlocked.Exchange(ref _currentThread, null);
             Interlocked.Exchange(ref _isLocked, 0);
         }
@@ -30,6 +37,7 @@ namespace lab1
 
         public void Wait()
         {
+            Console.WriteLine("wait");
             _waitingThreads.Add(Thread.CurrentThread);
             _unlock();
 
@@ -43,10 +51,11 @@ namespace lab1
 
         public void Notify()
         {
+            Console.WriteLine("notify");
             _currentThread = Thread.CurrentThread;
             if (_waitingThreads.Count > 0)
             {
-                _waitingThreads.RemoveAt(_waitingThreads.Count);
+                _waitingThreads.RemoveAt(_waitingThreads.Count-1);
                 Interlocked.Exchange(ref _isLocked, 0);
             } else
             {
@@ -56,6 +65,7 @@ namespace lab1
 
         public void NotifyAll()
         {
+            Console.WriteLine("notify all");
             _waitingThreads.Clear();
         }
     }
