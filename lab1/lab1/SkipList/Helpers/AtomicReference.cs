@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace lab1.SkipList.Helpers
 {
-    class AtomicReference<T> where T : class
+    public class AtomicReference<T> where T : class
     {
         private T _value;
 

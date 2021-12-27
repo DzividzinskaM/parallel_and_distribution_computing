@@ -8,7 +8,7 @@ namespace lab1.SkipList.Helpers
     {
         private readonly AtomicReference<ReferenceBase<T>> _reference;
 
-        public MarkedReference(T value, bool marked)
+        public MarkedAtomicReference(T value, bool marked)
         {
             _reference = new AtomicReference<ReferenceBase<T>>(new ReferenceBase<T>(value, marked));
         }

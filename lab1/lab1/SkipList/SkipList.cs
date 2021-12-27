@@ -78,13 +78,13 @@ namespace lab1.SkipList
             {
 
 
-                if (!Find(node, ref previousItem, ref NextItem))
+                if (!Find(node, ref previous, ref next))
                 {
                     return false;
                 }
 
                 Node<T> currentNext;
-                for (var level = node.HighestPoint; level > Levels.MinLevel; level--)
+                for (var level = node.TopPoint; level > Levels.MinLevel; level--)
                 {
                     var isMarked = false;
                     currentNext = node.Next[level].Get(ref isMarked);
@@ -102,11 +102,11 @@ namespace lab1.SkipList
                 while (true)
                 {
                     var iMarkedIt = node.Next[Levels.MinLevel].CompareAndExchange(currentNext, true, currentNext, false);
-                    currentNext = NextItem[Levels.MinLevel].Next[Levels.MinLevel].Get(ref marked);
+                    currentNext = next[Levels.MinLevel].Next[Levels.MinLevel].Get(ref marked);
 
                     if (iMarkedIt)
                     {
-                        Find(node, ref previousItem, ref NextItem);
+                        Find(node, ref previous, ref next);
                         return true;
                     }
 
